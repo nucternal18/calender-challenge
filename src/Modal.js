@@ -22,16 +22,16 @@ const Modal = ({
         title: title,
       });
     }
-    newDates[index] = currentDate;
+    dates[index] = currentDate;
 
-    setDates(newDates);
+    localStorage.setItem('dates', JSON.stringify(dates));
     setTitle('');
     setSelected(!selected);
   };
 
-  useEffect(() => {
-    localStorage.setItem('dates', JSON.stringify(dates));
-  }, [dates]);
+  // useEffect(() => {
+  //   localStorage.setItem('dates', JSON.stringify(dates));
+  // }, [dates, selected]);
   return (
     <div
       className={

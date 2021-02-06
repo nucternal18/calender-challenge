@@ -22,68 +22,71 @@ export const App = () => {
       month: today.getMonth(),
       year: today.getFullYear(),
     });
+
+
+
+
+  // const getDatesForMonth = () => {
+  //   // Get the first day of the month
+  //   let startOfMonth = new Date(calendar.year, calendar.month).getDay();
+  //   // Get the total number of days in the current month
+  //   let datesInMonth = new Date(calendar.year, calendar.month + 1, 0).getDate();
+  //   // Get the total number of days in the previous month
+  //   let prevNumOfDays = new Date(calendar.year, calendar.month, 0).getDate();
+  //   let datesArr = [];
+
+  //   for (let i = 1; i <= startOfMonth; i++) {
+  //     const prevMonthDate = prevNumOfDays - startOfMonth + i;
+  //     const key = new Date(
+  //       calendar.year,
+  //       calendar.month - 1,
+  //       prevMonthDate
+  //     ).toLocaleString();
+  //     datesArr.push({ key: key, date: prevMonthDate, events: [] });
+  //   }
+
+  //   for (let j = 1; j <= datesInMonth; j++) {
+  //     const key = new Date(calendar.year, calendar.month, j).toLocaleString();
+  //     if (
+  //       j === today.getDate() &&
+  //       calendar.month === today.getMonth() &&
+  //       calendar.year === today.getFullYear() &&
+  //       calendar.day === dayArr[today.getDay()]
+  //     ) {
+  //       datesArr.push({
+  //         key: key,
+  //         date: j,
+  //         day: dayArr[new Date(calendar.year, calendar.month, j).getDay()],
+  //         month: calendar.month,
+  //         year: calendar.year,
+  //         event: []
+  //       });
+  //     } else {
+  //       datesArr.push({
+  //         key: key,
+  //         date: j,
+  //         day: dayArr[new Date(calendar.year, calendar.month, j).getDay()],
+  //         month: calendar.month,
+  //         year: calendar.year,
+  //         event: [],
+  //       });
+  //     }
+  //   }
+  //   localStorage.setItem('dates', JSON.stringify(datesArr))
+  // };
+
+  //  useEffect(() => {
+  //    getDatesForMonth();
+  //    // eslint-disable-next-line react-hooks/exhaustive-deps
+  //  }, [calendar]);
   
-  //  const getFirstWeekdayOfMonth = (month, year) => {
-  //    return new Date(year, month, 1).getDay();
-  //  };
-
-
-
-
-  const getDatesForMonth = () => {
-    // Get the first day of the month
-    let startOfMonth = new Date(calendar.year, calendar.month).getDay();
-    // Get the total number of days in the current month
-    let datesInMonth = new Date(calendar.year, calendar.month + 1, 0).getDate();
-    // Get the total number of days in the previous month
-    let prevNumOfDays = new Date(calendar.year, calendar.month, 0).getDate();
-    let dates = [];
-
-    for (let i = 1; i <= startOfMonth; i++) {
-      const prevMonthDate = prevNumOfDays - startOfMonth + i;
-      const key = new Date(
-        calendar.year,
-        calendar.month - 1,
-        prevMonthDate
-      ).toLocaleString();
-      dates.push({ key: key, date: prevMonthDate, events: [] });
-    }
-
-    for (let j = 1; j <= datesInMonth; j++) {
-      const key = new Date(calendar.year, calendar.month, j).toLocaleString();
-      if (
-        j === today.getDate() &&
-        calendar.month === today.getMonth() &&
-        calendar.year === today.getFullYear() &&
-        calendar.day === dayArr[today.getDay()]
-      ) {
-        dates.push({
-          key: key,
-          date: j,
-          day: dayArr[new Date(calendar.year, calendar.month, j).getDay()],
-          month: calendar.month,
-          year: calendar.year,
-          event: []
-        });
-      } else {
-        dates.push({
-          key: key,
-          date: j,
-          day: dayArr[new Date(calendar.year, calendar.month, j).getDay()],
-          month: calendar.month,
-          year: calendar.year,
-          event: [],
-        });
+    useEffect(() => {
+      const date = localStorage.getItem('dates');
+      if (date) {
+        const parsedJSON = JSON.parse(date);
+        setDates(parsedJSON);
       }
-    }
-    setDates(dates);
-    localStorage.setItem('dates', JSON.stringify(dates))
-  };
-
-   useEffect(() => {
-     getDatesForMonth();
-     // eslint-disable-next-line react-hooks/exhaustive-deps
-   }, [calendar]);
+    }, [calendar]);
 
   return (
     <div

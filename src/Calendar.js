@@ -29,23 +29,87 @@ const dayArr = [
   'Saturday',
 ];
 
-const Calendar = ({ startingDate, theme, setCalendar, calendar, dates, setDates }) => {
+const Calendar = ({
+  startingDate,
+  theme,
+  setCalendar,
+  calendar,
+  dates,
+  setDates,
+}) => {
   const [selected, setSelected] = useState(false);
   const [selectedDate, setSelectedDate] = useState(startingDate);
-  const [index, setIndex] = useState(0)
-  const [monthlyDates, setMonthlyDates] = useState([]);
+  const [index, setIndex] = useState(0);
   const [title, setTitle] = useState('');
 
   useEffect(() => {
-    const date = localStorage.getItem('dates');
-    if (date) {
-      const parsedJSON = JSON.parse(date);
-      setMonthlyDates(parsedJSON);
-    }
-  }, [selected, setDates]);
+      const getDatesForMonth = () => {
+        // Get the first day of the month
+        let startOfMonth = new Date(calendar.year, calendar.month).getDay();
+        // Get the total number of days in the current month
+        let datesInMonth = new Date(
+          calendar.year,
+          calendar.month + 1,
+          0
+        ).getDate();
+        // Get the total number of days in the previous month
+        let prevNumOfDays = new Date(
+          calendar.year,
+          calendar.month,
+          0
+        ).getDate();
+        let datesArr = [];
+
+        for (let i = 1; i <= startOfMonth; i++) {
+          const prevMonthDate = prevNumOfDays - startOfMonth + i;
+          const key = new Date(
+            calendar.year,
+            calendar.month - 1,
+            prevMonthDate
+          ).toLocaleString();
+          datesArr.push({ key: key, date: prevMonthDate, events: [] });
+        }
+
+        for (let j = 1; j <= datesInMonth; j++) {
+          const key = new Date(
+            calendar.year,
+            calendar.month,
+            j
+          ).toLocaleString();
+          if (
+            j === startingDate.getDate() &&
+            calendar.month === startingDate.getMonth() &&
+            calendar.year === startingDate.getFullYear() &&
+            calendar.day === dayArr[startingDate.getDay()]
+          ) {
+            datesArr.push({
+              key: key,
+              date: j,
+              day: dayArr[new Date(calendar.year, calendar.month, j).getDay()],
+              month: calendar.month,
+              year: calendar.year,
+              event: [],
+            });
+          } else {
+            datesArr.push({
+              key: key,
+              date: j,
+              day: dayArr[new Date(calendar.year, calendar.month, j).getDay()],
+              month: calendar.month,
+              year: calendar.year,
+              event: [],
+            });
+          }
+        }
+        localStorage.setItem('dates', JSON.stringify(datesArr));
+      };
+
+    getDatesForMonth();
+    
+  }, [calendar.day, calendar.month, calendar.year, startingDate]);
 
   const openModal = (date, i) => {
-    setIndex(i)
+    setIndex(i);
     setSelectedDate(date);
     setSelected(!selected);
   };
@@ -56,6 +120,7 @@ const Calendar = ({ startingDate, theme, setCalendar, calendar, dates, setDates 
   };
 
   const onClickPrevious = () => {
+
     const date = new Date(calendar.year, calendar.month - 1);
     setCalendar({ month: date.getMonth(), year: date.getFullYear() });
   };
@@ -101,7 +166,7 @@ const Calendar = ({ startingDate, theme, setCalendar, calendar, dates, setDates 
         ))}
       </div>
       <div className='grid grid-cols-7 gap-2'>
-        {monthlyDates.map((d, i) => {
+        {dates.map((d, i) => {
           const { key, month, date, event } = d;
           return (
             <div
