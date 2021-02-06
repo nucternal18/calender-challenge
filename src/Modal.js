@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { ImCross } from 'react-icons/im';
 
 const Modal = ({
@@ -9,7 +8,6 @@ const Modal = ({
   title,
   setTitle,
   dates,
-  setDates,
   index,
 }) => {
   const onClickDate = (title) => {
@@ -22,16 +20,14 @@ const Modal = ({
         title: title,
       });
     }
-    dates[index] = currentDate;
+    newDates[index] = currentDate;
 
-    localStorage.setItem('dates', JSON.stringify(dates));
+    localStorage.setItem('dates', JSON.stringify(newDates));
     setTitle('');
     setSelected(!selected);
   };
 
-  // useEffect(() => {
-  //   localStorage.setItem('dates', JSON.stringify(dates));
-  // }, [dates, selected]);
+ 
   return (
     <div
       className={

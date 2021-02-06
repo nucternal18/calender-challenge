@@ -1,92 +1,25 @@
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import Calendar from './Calendar';
 import { useDarkMode } from './hooks/useDarkMode';
-
-const dayArr = [
-  'Sunday',
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
-  'Saturday',
-];
 
 export const App = () => {
   const today = new Date();
 
   const [theme, toggleTheme] = useDarkMode();
   const [dates, setDates] = useState([]);
-    const [calendar, setCalendar] = useState({
-      day: today.getDay(),
-      month: today.getMonth(),
-      year: today.getFullYear(),
-    });
+  const [calendar, setCalendar] = useState({
+    day: today.getDay(),
+    month: today.getMonth(),
+    year: today.getFullYear(),
+  });
 
-
-
-
-  // const getDatesForMonth = () => {
-  //   // Get the first day of the month
-  //   let startOfMonth = new Date(calendar.year, calendar.month).getDay();
-  //   // Get the total number of days in the current month
-  //   let datesInMonth = new Date(calendar.year, calendar.month + 1, 0).getDate();
-  //   // Get the total number of days in the previous month
-  //   let prevNumOfDays = new Date(calendar.year, calendar.month, 0).getDate();
-  //   let datesArr = [];
-
-  //   for (let i = 1; i <= startOfMonth; i++) {
-  //     const prevMonthDate = prevNumOfDays - startOfMonth + i;
-  //     const key = new Date(
-  //       calendar.year,
-  //       calendar.month - 1,
-  //       prevMonthDate
-  //     ).toLocaleString();
-  //     datesArr.push({ key: key, date: prevMonthDate, events: [] });
-  //   }
-
-  //   for (let j = 1; j <= datesInMonth; j++) {
-  //     const key = new Date(calendar.year, calendar.month, j).toLocaleString();
-  //     if (
-  //       j === today.getDate() &&
-  //       calendar.month === today.getMonth() &&
-  //       calendar.year === today.getFullYear() &&
-  //       calendar.day === dayArr[today.getDay()]
-  //     ) {
-  //       datesArr.push({
-  //         key: key,
-  //         date: j,
-  //         day: dayArr[new Date(calendar.year, calendar.month, j).getDay()],
-  //         month: calendar.month,
-  //         year: calendar.year,
-  //         event: []
-  //       });
-  //     } else {
-  //       datesArr.push({
-  //         key: key,
-  //         date: j,
-  //         day: dayArr[new Date(calendar.year, calendar.month, j).getDay()],
-  //         month: calendar.month,
-  //         year: calendar.year,
-  //         event: [],
-  //       });
-  //     }
-  //   }
-  //   localStorage.setItem('dates', JSON.stringify(datesArr))
-  // };
-
-  //  useEffect(() => {
-  //    getDatesForMonth();
-  //    // eslint-disable-next-line react-hooks/exhaustive-deps
-  //  }, [calendar]);
-  
-    useEffect(() => {
-      const date = localStorage.getItem('dates');
-      if (date) {
-        const parsedJSON = JSON.parse(date);
-        setDates(parsedJSON);
-      }
-    }, [calendar]);
+  useEffect(() => {
+    const date = localStorage.getItem('dates');
+    if (date) {
+      const parsedJSON = JSON.parse(date);
+      setDates(parsedJSON);
+    }
+  }, [calendar]);
 
   return (
     <div
@@ -114,7 +47,7 @@ export const App = () => {
           calendar={calendar}
           dates={dates}
           theme={theme}
-            setDates={setDates}
+          setDates={setDates}
           setCalendar={setCalendar}
         />
       </div>
